@@ -12,7 +12,6 @@
       cluster_net: "{{ slurm_net }}"
       cluster_gw_group: "{{ slurm_gw_group }}"
 
-
     - role: jasmin.cluster-infra
       cluster_network: "caastest-U-internal"
       cluster_name: "{{ nfs_name }}"

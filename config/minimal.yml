@@ -1,11 +1,11 @@
 ---
 # This name is used for the Heat stack and as a prefix for the
 # cluster node hostnames.
-cluster_name: test
+cluster_name: holly
 
 cluster_deploy_user: 'centos'
 
-cluster_net: "caastest-U-internal"
+cluster_network: "caastest-U-internal"
 
 cluster_groups:
   - "{{ slurm_login }}"

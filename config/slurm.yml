@@ -5,8 +5,7 @@ slurm_name: slurm
 
 slurm_deploy_user: 'centos'
 
-slurm_net:
-  - { net: "caastest-U-internal", subnet: "caastest-U-internal" }
+slurm_net: "caastest-U-internal"
 
 slurm_groups:
   - "{{ slurm_login }}"
@@ -22,6 +21,10 @@ slurm_login:
   num_nodes: 1
   root_volume_size: 0
   node_resource: "Cluster::Node" 
+  nodenet_resource: "Cluster::NodeNet1WithPreallocatedFIP" 
+  nodenet_fips:
+    - uuid: "fbd8781c-0917-41a3-8a66-ecaf0f05826a"
+      ip: "192.171.139.250"
   extra_groups:
     - "nfs_clients"
   nodenet_resource: "Cluster::NodeNet1WithPreallocatedFIP"
