@@ -6,17 +6,20 @@
   roles:
     - role: jasmin.cluster-infra
       cluster_network: "caastest-U-internal"
-      cluster_name: "{{ nfs_name }}"
-      cluster_groups: "{{ nfs_groups }}"
-      cluster_deploy_user: "{{ nfs_deploy_user }}"
-      cluster_net: "{{ nfs_net }}"
-
-    - role: jasmin.cluster-infra
-      cluster_network: "caastest-U-internal"
       cluster_name: "{{ slurm_name }}"
       cluster_groups: "{{ slurm_groups }}"
       cluster_deploy_user: "{{ slurm_deploy_user }}"
       cluster_net: "{{ slurm_net }}"
+      cluster_gw_group: "{{ slurm_gw_group }}"
+
+
+    - role: jasmin.cluster-infra
+      cluster_network: "caastest-U-internal"
+      cluster_name: "{{ nfs_name }}"
+      cluster_groups: "{{ nfs_groups }}"
+      cluster_deploy_user: "{{ nfs_deploy_user }}"
+      cluster_net: "{{ nfs_net }}"
+      cluster_gw_group: "{{ slurm_gw_group }}"
 
 - hosts:
     - cluster
@@ -31,16 +34,11 @@
   roles:
     - role: resmo.ntp
 
-#    - role: stackhpc.cluster-nfs
-#      nfs_enable:
-#        server: "{{ inventory_hostname in groups['nfs'] }}"
-#        clients: "{{ inventory_hostname in groups['compute'] or inventory_hostname in groups['login'] }}"
-#      nfs_server: "{{ groups['nfs'] | first }}"
 - import_playbook: nfs.yml
 
 - hosts:
-    - slurm_login
-    - slurm_compute
+    - "{{ slurm_name }}_login"
+    - "{{ slurm_name }}_compute"
   become: yes
   pre_tasks:
 
@@ -65,8 +63,8 @@
 
         
 - hosts:
-    - login
-    - compute
+    - "{{ slurm_name }}_login"
+    - "{{ slurm_name }}_compute"
   become: yes
   pre_tasks:
 
@@ -83,10 +81,10 @@
   roles:
     - role: stackhpc.openhpc
       openhpc_enable:
-        control: "{{ inventory_hostname in groups['login'] }}"
-        batch: "{{ inventory_hostname in groups['compute'] }}"
+        control: "{{ inventory_hostname in groups[slurm_name + '_login'] }}"
+        batch: "{{ inventory_hostname in groups[slurm_name + '_compute'] }}"
         runtime: true
-      slurm_cluster_name: "{{ slurm_name }}"
-      slurm_partitions: "{{ openhpc_slurm_partitions }}"
-      slurm_control_host: "{{ groups['login'] | first }}"
+      openhpc_cluster_name: "{{ slurm_name }}"
+      openhpc_slurm_partitions: "{{ openhpc_slurm_partitions }}"
+      openhpc_slurm_control_host: "{{ groups[slurm_name + '_login'] | first }}"
 
