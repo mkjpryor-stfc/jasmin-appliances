@@ -3,13 +3,6 @@
 # using a number of baremetal compute node instances, and configure it
 # for a SLURM partition
 - hosts: openstack
-  pre_tasks:
-    - debug: 
-        var: groups['openstack']
-
-    - debug: 
-        var: openstack_auth
-
   roles:
     - role: jasmin.cluster-infra
       cluster_auth_type: "{{ openstack_auth_type }}"
