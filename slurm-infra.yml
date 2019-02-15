@@ -5,6 +5,9 @@
 - hosts: openstack
   pre_tasks:
     - debug: 
+        var: groups['openstack']
+
+    - debug: 
         var: openstack_auth
 
   roles:
