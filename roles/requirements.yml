@@ -9,7 +9,7 @@
   name: stackhpc.cluster-infra
 - src: https://github.com/stackhpc/jasmin-cluster-infra-ansible
   name: jasmin.cluster-infra
-  version: issue-23
+  version: issue-23-A
 - src: https://github.com/stackhpc/ansible-role-cluster-nfs
   name: stackhpc.cluster-nfs
 - src: stackhpc.openhpc
